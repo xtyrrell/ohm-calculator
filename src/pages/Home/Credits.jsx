@@ -30,7 +30,7 @@ const SkewTextAnchor = styled.a`
 
 const Credits = () => (
   <CreditsContainer>
-    <Byline>thanks to the original protocol champs</Byline>
+    <Byline>thanks to the protocol champs</Byline>
 
     <a href="https://float.capital">
       <SkewImage

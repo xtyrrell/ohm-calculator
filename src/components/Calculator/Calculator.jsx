@@ -72,6 +72,7 @@ const Calculator = () => {
 
   const amountToShortOhm =
     ohmHoldings &&
+    !isNaN(ohmHoldings) &&
     shortOhmExposure &&
     calculateAmountToShortOhm(
       ohmHoldings,
@@ -113,7 +114,9 @@ short position = ohm holdings / ( leverage * short exposure)`;
       <PrimaryAnchor
         target="_blank"
         href="https://float.capital/app/markets?selected=2&actionOption=short"
-        className={c({ disabled: !ohmHoldings })}
+        className={c({
+          disabled: !amountToShortOhm
+        })}
       >
         Mint short position{" "}
         {amountToShortOhm && ` for ${formatDollars(amountToShortOhm)}`}
