@@ -33,7 +33,8 @@ const CalculatorContainer = styled.div`
     content: "";
     overflow: hidden;
     pointer-events: none;
-    background: no-repeat center / 25% url(./assets/images/star.png);
+    background: no-repeat center / 25% url(../../assets/images/star.png);
+    );
 
     position: absolute;
     inset: 0;
