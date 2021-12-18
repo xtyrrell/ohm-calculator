@@ -3,11 +3,11 @@ import styled from "@emotion/styled";
 const CreditsContainer = styled.div`
   margin: 56px 0;
   text-align: center;
-
-  /* overflow: hidden; */
 `;
 
-const Byline = styled.p``;
+const Byline = styled.p`
+  margin: 6px;
+`;
 
 const SkewImage = styled.img`
   transform: rotate(${({ degrees }) => degrees || "-4"}deg);
@@ -20,7 +20,7 @@ const SkewTextAnchor = styled.a`
   margin: 8px auto;
   display: block;
   text-decoration: none;
-  font-size: 32px;
+  font-size: 24px;
   color: #f7152b;
 
   &:hover {
@@ -28,9 +28,13 @@ const SkewTextAnchor = styled.a`
   }
 `;
 
+const Divider = styled.hr`
+  margin: 38px 0;
+`;
+
 const Credits = () => (
   <CreditsContainer>
-    <Byline>thanks to the protocol champs</Byline>
+    <Byline>Float Strategies is an unofficial information hub run by and for the <a href="https://float.capital">Float Capital</a> community. Major thanks to the champs behind the protocol</Byline>
 
     <a href="https://float.capital">
       <SkewImage
@@ -39,9 +43,10 @@ const Credits = () => (
       />
     </a>
 
-    <Byline>this calculator website was built by</Byline>
+    <Divider />
 
     <SkewTextAnchor href="https://xtyrrell.com">xtyrrell(.com)</SkewTextAnchor>
+    <Byline>wuz here :)</Byline>
   </CreditsContainer>
 );
 

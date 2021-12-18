@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { map } from "ramda";
 
-export const fetchTotalLockedPositions = async () => {
+export const fetchTotalLockedPositions = async (marketSymbol) => {
   const API_URL =
     "https://api.thegraph.com/subgraphs/name/float-capital/float-capital-alpha";
 
   const query = `{
     "query":
-      "query { syntheticMarkets(where: {id: 3}) { id symbol latestSystemState { id timestamp blockNumber totalLockedLong totalLockedShort } } }"
+      "query { syntheticMarkets(where: {symbol: \\"${marketSymbol}\\"}) { id symbol latestSystemState { id timestamp blockNumber totalLockedLong totalLockedShort } } }"
   }`;
 
   const response = await fetch(API_URL, {
@@ -22,23 +22,17 @@ export const fetchTotalLockedPositions = async () => {
 
   if (!data || !data.data) throw new Error("NO_DATA");
 
-  // console.log("response data", data);
-
-  const ohmMarket = data.data.syntheticMarkets.find(
-    (market) => market.symbol === "2OHM"
+  const market = data.data.syntheticMarkets.find(
+    (market) => market.symbol === marketSymbol
   );
 
-  if (ohmMarket.length === 0) throw new Error("NO_2OHM_MARKET");
+  if (market.length === 0) throw new Error(`MARKET_NOT_FOUND: ${marketSymbol}`);
 
-  // console.log("ohmMarket", ohmMarket);
-
-  const { totalLockedLong, totalLockedShort } = ohmMarket.latestSystemState;
+  const { totalLockedLong, totalLockedShort } = market.latestSystemState;
 
   return {
-    "2OHM": {
-      totalLockedLong: BigInt(totalLockedLong),
-      totalLockedShort: BigInt(totalLockedShort)
-    }
+    totalLockedLong: BigInt(totalLockedLong),
+    totalLockedShort: BigInt(totalLockedShort)
   };
 };
 
@@ -75,21 +69,18 @@ export const calculateMarketExposures = ({
   };
 };
 
-export const useExposuresByMarket = () => {
+export const useExposuresForMarket = (marketSymbol) => {
   const [exposures, setExposures] = useState({});
 
   useEffect(() => {
     const loadData = async () => {
-      const totalLockedPositionsByMarket = await fetchTotalLockedPositions();
+      const totalLockedPositionsByMarket = await fetchTotalLockedPositions(marketSymbol);
 
-      const exposuresByMarket = map(
-        calculateMarketExposures,
-        totalLockedPositionsByMarket
-      );
+      const exposures = calculateMarketExposures(totalLockedPositionsByMarket)
 
-      console.log("exposuresByMarket", exposuresByMarket);
+      console.log("exposuresByMarket", exposures);
 
-      setExposures(exposuresByMarket);
+      setExposures(exposures);
     };
 
     loadData();
@@ -98,12 +89,12 @@ export const useExposuresByMarket = () => {
   return exposures;
 };
 
-export const calculateAmountToShortOhm = (
-  ohmHoldings,
-  shortOhmExposure,
+export const calculateDeltaNeutralShortSize = (
+  holdings,
+  shortExposure,
   leverage
 ) => {
-  return Number(ohmHoldings) / (leverage * (shortOhmExposure / 100));
+  return Number(holdings) / (leverage * (shortExposure / 100));
 };
 
 export const formatDollars = (dollars) =>

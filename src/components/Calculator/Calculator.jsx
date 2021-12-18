@@ -1,11 +1,10 @@
 import styled from "@emotion/styled";
-import { useEffect, useState } from "react";
-import { map } from "ramda";
+import { useState } from "react";
 import c from "classnames";
 
 import {
-  useExposuresByMarket,
-  calculateAmountToShortOhm,
+  useExposuresForMarket,
+  calculateDeltaNeutralShortSize,
   formatDollars
 } from "./utils";
 
@@ -60,53 +59,52 @@ const CalculatorContainer = styled.div`
   }
 `;
 
-const Calculator = () => {
-  const OHM_MARKET_LEVERAGE = 2;
+const Calculator = ({ floatMarketSymbol, currencySymbol, leverage, howWasThisCalculatedLink, mintShortPositionLink }) => {
+  const exposures = useExposuresForMarket(floatMarketSymbol);
 
-  const exposures = useExposuresByMarket();
-
-  const [ohmHoldings, setOhmHoldings] = useState("");
+  const [holdings, setHoldings] = useState("");
 
   console.log("exposures", exposures);
 
-  const shortOhmExposure = exposures?.["2OHM"]?.shortExposure;
+  const shortExposure = exposures?.shortExposure;
 
-  const amountToShortOhm =
-    ohmHoldings &&
-    !isNaN(ohmHoldings) &&
-    shortOhmExposure &&
-    calculateAmountToShortOhm(
-      ohmHoldings,
-      shortOhmExposure,
-      OHM_MARKET_LEVERAGE
+  const amountToShort =
+    holdings &&
+    !isNaN(holdings) &&
+    shortExposure &&
+    calculateDeltaNeutralShortSize(
+      holdings,
+      shortExposure,
+      leverage
     ).toFixed(2);
 
-  const explainerText = `Using short exposure of ${shortOhmExposure}% and leverage of ${OHM_MARKET_LEVERAGE}:
-short position = ohm holdings / ( leverage * short exposure)`;
+  const explainerText = `Using short exposure of ${shortExposure}% and leverage of ${leverage}:
+short position = ${currencySymbol} holdings / ( leverage * short exposure)`;
 
   return (
     <CalculatorContainer
+      id="calculator"
       className={c({ loading: !Object.keys(exposures).length })}
     >
       <h2>Calculator</h2>
 
       <InputOutputSections>
         <HalfCell>
-          <p>What is the total dollar value of your OHM holdings?</p>
+          <p>What is the total dollar value of your {currencySymbol} holdings?</p>
 
           <TokenAmountInput
             symbol={"$"}
-            onChange={(e) => setOhmHoldings(e.target.value)}
-            value={ohmHoldings}
-            autoFocus
+            onChange={(e) => setHoldings(e.target.value)}
+            value={holdings}
+            // autoFocus
           />
           {/* {" "}<span>--OR--</span> <button>Connect Wallet</button> */}
         </HalfCell>
         <HalfCell>
-          <p>Put this into a Float Capital OHM short position.</p>
+          <p>Put this into a Float Capital {currencySymbol} short position.</p>
           <TokenAmountInput
             symbol="$"
-            value={amountToShortOhm || "_"}
+            value={amountToShort || "_"}
             disabled
           />
         </HalfCell>
@@ -114,18 +112,18 @@ short position = ohm holdings / ( leverage * short exposure)`;
 
       <PrimaryAnchor
         target="_blank"
-        href="https://float.capital/app/markets?selected=2&actionOption=short"
+        href={mintShortPositionLink}
         className={c({
-          disabled: !amountToShortOhm
+          disabled: !amountToShort
         })}
       >
         Mint short position{" "}
-        {amountToShortOhm && ` for ${formatDollars(amountToShortOhm)}`}
+        {amountToShort && ` for ${formatDollars(amountToShort)}`}
       </PrimaryAnchor>
 
       <SecondaryAnchor
         target="_blank"
-        href="https://docs.float.capital/blog/hedge-your-ohm-position"
+        href={howWasThisCalculatedLink}
         title={explainerText}
       >
         How is this amount calculated?
@@ -157,7 +155,7 @@ const PrimaryAnchor = styled.a`
   margin-top: 42px;
 
   color: white;
-  background-color: #e92f41;
+  background-color: black;
   border: 1px solid transparent;
 
   display: block;

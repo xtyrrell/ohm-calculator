@@ -19,6 +19,15 @@
   font-style: normal;
 }
 
+:root {
+  --font-primary: "Argent Pixel CF", serif;
+  --colour-primary: #f7152b;
+  --colour-secondary: #2e2edc;
+  --colour-tertiary: #2ee028;
+  --colour-base: #310f0f;
+  --colour-background: #f1f0d9;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -33,23 +42,30 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Argent Pixel CF", serif;
+  font-family: var(--font-primary);
 }
 
-h1 {
+.title {
+  display: block;
   text-align: center;
-  color: #f7152b;
-  font-size: 64px;
+  color: var(--colour-primary);
+  font-size: 48px;
   line-height: 1.15;
+  margin: 26px;
+  text-decoration: none;
+
+  @media (min-width: 600px) {
+    font-size: 64px;
+  }
 }
 
 body {
-  background: #f1f0d9;
-  color: #310f0f;
+  background: var(--colour-background);
+  color: var(--colour-base);
   max-width: 900px;
   margin: auto;
 
-  font-family: "Argent Pixel CF", serif;
+  font-family: var(--font-primary);
   text-rendering: optimizeSpeed;
   font-smooth: never;
   line-height: 1.5;
@@ -61,15 +77,15 @@ button {
   border: none;
   padding: 0.25em;
   margin: 0 0.25em;
-  color: #310f0f;
+  color: var(--colour-base);
 }
 
 button {
-  background-color: #e92f41;
+  background-color: var(--colour-primary);
   color: white;
   font-weight: bold;
 
-  &::after {
+  &.arrow::after {
     content: " -->";
   }
 }
@@ -78,4 +94,26 @@ input:focus,
 button:focus {
   background-color: #eee;
   outline: 2px solid black;
+}
+
+a {
+  color: var(--colour-secondary);
+}
+
+h1,
+h2,
+h3 {
+  a {
+    text-decoration: none;
+    color: currentColor;
+  }
+}
+
+hr {
+  border: 1px dashed var(--colour-base);
+}
+
+abbr {
+  text-decoration: none;
+  border-bottom: 1px solid var(--colour-primary);
 }
