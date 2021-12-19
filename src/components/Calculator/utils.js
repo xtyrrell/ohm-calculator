@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { map } from "ramda";
 
 export const fetchTotalLockedPositions = async (marketSymbol) => {
   const API_URL =
