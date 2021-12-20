@@ -21,7 +21,7 @@ const StyledCopyButton = styled(CopyToClipboard)`
 `;
 
 const Subtitle = ({ children }) => (
-  <SubtitleContainer><H2>{children}</H2><StyledCopyButton textToCopy={window.location}>Copy link</StyledCopyButton></SubtitleContainer>
+  <SubtitleContainer><H2>{children}</H2><StyledCopyButton textToCopy={window.location} copiedMessage="Link copied!">Share</StyledCopyButton></SubtitleContainer>
 )
 
 export default Subtitle

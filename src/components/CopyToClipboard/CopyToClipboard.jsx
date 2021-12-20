@@ -40,14 +40,14 @@ const CopyToClipboardButton = styled(StyleResetButton)`
   height: unset;
 `;
 
-const CopyToClipboard = ({ textToCopy, clearResultTimeout=4000, children }) => {
+const CopyToClipboard = ({ textToCopy, copiedMessage="Copied!", clearResultTimeout=4000, children }) => {
   const [result, setResult] = useState()
 
   const onClick = () => {
     const res = copyTextToClipboard(textToCopy)
 
     res.then(
-      () => setResult("Copied!")
+      () => setResult(copiedMessage)
     ).catch(
       () => setResult("Could not copy :(")
     )
