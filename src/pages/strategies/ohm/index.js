@@ -19,7 +19,7 @@ const Page = () => {
             <>Enter that dollar value into the <a href="#calculator">calculator on this page.</a></>,
             <>See the calculated dollar value output. This is amount to mint and hold in a Float Capital short position. Make sure you have DAI on the Polygon network of at least this amount (ideally more, so you can keep your position adjusted as exposure changes — see the final step). If you don't have Polygon DAI, you can bridge Ethereum mainnet assets over to Polygon and use a <abbr title="Decentralised EXchange">DEX</abbr> such as <a href="https://quickswap.exchange">Quickswap</a> to swap them for DAI, or buy it from a <abbr title="Centralised EXchange">CEX</abbr> like <a href="https://ramp.network">Ramp</a></>,
             <>Mint a short postion of that size (or adjust it, if you already have a short position) here:{" "}
-              <a href="https://float.capital/app/markets?marketIndex=3&actionOption=short">
+              <a href="https://bit.ly/3qi6m1c">
                 mint short position
               </a>.</>,
               "Because the position size you need is calculated based off the total amount of long and short positions in the market, it will change frequently. Use the calculator regularly to see if you need to update your position to your bags secured."
@@ -27,7 +27,7 @@ const Page = () => {
           ]
         }
       />
-      <Calculator floatMarketSymbol="2OHM" leverage={2} currencySymbol="OHM" howWasThisCalculatedLink="https://docs.float.capital/blog/hedge-your-ohm-position" mintShortPositionLink="https://float.capital/app/markets?marketIndex=3&actionOption=short" />
+      <Calculator floatMarketSymbol="2OHMv2" leverage={2} currencySymbol="OHM" howWasThisCalculatedLink="https://docs.float.capital/blog/hedge-your-ohm-position" mintShortPositionLink="https://bit.ly/3qi6m1c" />
       <ScrollExplainer title="Huh?" explainer={<>
         <p>
           OHM's four-figure APY is awesome. But, holding OHM comes with price risk.
@@ -40,7 +40,7 @@ const Page = () => {
             Float Capital
           </a>{" "}
           let you bet on the price of OHM <em>going down</em> by minting a{" "}
-          <a href="https://float.capital/app/markets?marketIndex=3&actionOption=short">
+          <a href="https://bit.ly/3qi6m1c">
             <em>short position</em> on the OHM market
           </a>. If you put just the right
           amount into betting on the price of OHM going down, your two bets going in
